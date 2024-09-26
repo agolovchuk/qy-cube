@@ -8,6 +8,10 @@ export default defineConfig({
   server: {
     port: 3000,
   },
+  base: "/qy-cube/",
+  build: {
+    manifest: true,
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
