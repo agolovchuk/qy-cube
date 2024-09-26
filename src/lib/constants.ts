@@ -37,3 +37,12 @@ export enum CubeColor {
   green = 4,
   blue = 5,
 }
+
+export enum CubeFacet {
+  top,
+  left,
+  back,
+  bottom,
+  right,
+  front,
+}

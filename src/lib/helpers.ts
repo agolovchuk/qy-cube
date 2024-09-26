@@ -31,3 +31,7 @@ export function getTimeStamp(data: Uint8Array, start: number): number {
   const ts = new Uint32Array(data.subarray(start, start + 4));
   return ts[0] * 1.6;
 }
+
+export function separateByte(byte: number): [number, number] {
+  return [byte & 0x0f, byte >> 4];
+}
