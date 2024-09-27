@@ -1,5 +1,8 @@
 .cube {
   &__container {
+    padding-bottom: 80px;
+    --rotate-x: 15deg;
+    --rotate-y: 15deg;
     --cube-dimension: 60px;
     display: flex;
     width: calc(var(--cube-dimension) * 6);
@@ -26,7 +29,6 @@
     position: absolute;
     width: var(--cube-dimension);
     height: var(--cube-dimension);
-    // border: 1px solid #6c757d;
     opacity: 1;
     --x-axis: 0px;
     --y-axis: 0px;

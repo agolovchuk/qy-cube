@@ -1,3 +1,4 @@
+import { CubeMove } from "./constants";
 export type EventHandler<T = undefined> = (data: T) => void;
 
 export type UUID = string | number;
@@ -14,4 +15,10 @@ export interface Communicator {
   set prefix(prefix: string);
   get id(): string;
   get name(): string;
+}
+
+export interface CubeState {
+  battery: number;
+  state: ReadonlyArray<number>;
+  move?: CubeMove;
 }

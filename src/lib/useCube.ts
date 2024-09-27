@@ -1,24 +1,26 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AppStatus } from "@/domain";
-import { QYCube, separateByte } from "./QYCube";
+import { QYCube } from "./QYCube";
 import { BT } from "./bt";
-import type { CubeMessage } from "./QYCube/types";
+import { NORMAL_CUBE_STATE } from "./constants";
+import type { CubeState } from "./types";
 
 export const useCube = () => {
   const cube = useRef<QYCube>();
+
+  // TODO: Migrate to useReduce
   const [appStatus, setStatus] = useState<AppStatus>(AppStatus.DISCONNECTED);
-  const [state, setState] = useState<ReadonlyArray<number>>();
+  const [state, setState] = useState<ReadonlyArray<number>>(NORMAL_CUBE_STATE);
   const [notes, setNotes] = useState<string>();
+  const [battery, setBattery] = useState<number>();
+
   const handleDisconnect = useCallback(() => {
     setStatus(AppStatus.DISCONNECTED);
   }, []);
 
-  const handleMessage = useCallback((message: CubeMessage) => {
-    const data = message.state.reduce<ReadonlyArray<number>>(
-      (a, v) => [...a, ...separateByte(v)],
-      []
-    );
-    setState(data);
+  const handleMessage = useCallback((message: CubeState) => {
+    setState(message.state);
+    setBattery(message.battery);
   }, []);
 
   const disconnect = useCallback(() => {
@@ -53,5 +55,6 @@ export const useCube = () => {
     state,
     appStatus,
     notes,
+    battery,
   };
 };

@@ -5,18 +5,3 @@ export enum CubeMessageType {
   StateChange = 0x3,
   SyncConfirmation = 0x4,
 }
-
-export enum CubeMove {
-  "L'" = 0x1,
-  "L" = 0x2,
-  "R'" = 0x3,
-  "R" = 0x4,
-  "D'" = 0x5,
-  "D" = 0x6,
-  "U'" = 0x7,
-  "U" = 0x8,
-  "F'" = 0x9,
-  "F" = 0xa,
-  "B'" = 0xb,
-  "B" = 0xc,
-}
