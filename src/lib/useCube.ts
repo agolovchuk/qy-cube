@@ -1,8 +1,7 @@
 import { useCallback, useRef, useState } from "react";
-import { QYCube } from "./qyCube";
-import { separateByte } from "./helpers";
+import { QYCube, separateByte } from "./QYCube/";
 import { BT } from "./bt";
-import type { CubeMessage } from "./types";
+import type { CubeMessage } from "./QYCube/types";
 
 export enum AppStatus {
   CONNECTED,
@@ -33,11 +32,12 @@ export const useCube = () => {
   }, []);
 
   const handleConnect = useCallback(async () => {
-    cube.current = new QYCube(new BT(), handleDisconnect, handleMessage);
+    cube.current = new QYCube(new BT(handleDisconnect), handleMessage);
     try {
       await cube.current.init();
       setStatus(AppStatus.CONNECTED);
-    } catch {
+    } catch (err) {
+      console.log("ERRor", err);
       setStatus(AppStatus.ERROR);
     }
   }, [handleDisconnect, handleMessage]);

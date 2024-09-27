@@ -1,7 +1,7 @@
 import { crc16ModBus } from "./crc16";
-import { createPacket } from "./helpers";
+import { createPacket } from "./QYCube";
 import { padMessageToBlockSize, decrypt, encrypt } from "./aes128";
-import { APP_HELLO, MAC } from "./constants";
+import { APP_HELLO, MAC } from "./mock";
 
 const hello = new Uint8Array([
   254, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 249, 252, 0, 0, 163, 204, 21, 8, 0,

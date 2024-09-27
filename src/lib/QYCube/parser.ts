@@ -1,4 +1,4 @@
-import { crc16ModBus } from "./crc16";
+import { crc16ModBus } from "../crc16";
 import { CubeMessageType } from "./constants";
 import { u8toArray } from "./helpers";
 import type { CubeMessage } from "./types";

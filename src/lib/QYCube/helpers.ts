@@ -1,5 +1,5 @@
-import { START } from "./constants";
-import { crc16ModBus } from "./crc16";
+import { START_BYTE } from "./constants";
+import { crc16ModBus } from "../crc16";
 
 export function createPacket(
   message: Uint8Array,
@@ -8,7 +8,7 @@ export function createPacket(
   const dataLength = 2 + message.length + (mac ? mac.length : 0) + 2;
   if (dataLength + 2 > 255) throw new Error("Packet len > 255");
   const packet = new Uint8Array(dataLength);
-  packet.set([START, dataLength], 0);
+  packet.set([START_BYTE, dataLength], 0);
   packet.set(message, 2);
   if (mac) {
     packet.set(mac.slice().reverse(), message.length + 2);

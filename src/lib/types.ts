@@ -1,42 +1,17 @@
-import { CubeMessageType, CubeMove } from "./constants";
-
 export type EventHandler<T = undefined> = (data: T) => void;
 
+export type UUID = string | number;
+
 export interface Communicator {
-  send(data: Uint8Array, uuid?: number | string): Promise<void>;
-  mac: Uint8Array;
-  init(
-    onDisconnect: EventHandler,
-    onMessage: EventHandler<Uint8Array>
+  onMessageSubscribe(
+    uuids: [UUID, UUID],
+    fn: EventHandler<Uint8Array>
   ): Promise<void>;
-
+  send(data: Uint8Array, uuid: UUID): Promise<void>;
+  init(): Promise<void>;
   disconnect(): void;
+  set uuids(uuids: UUID[]);
+  set prefix(prefix: string);
+  get id(): string;
+  get name(): string;
 }
-
-interface BaseMessage {
-  battery: number;
-  timestamp: Uint8Array;
-  isASCRequire: number;
-  state: CubeState;
-}
-
-type CubeState = Uint8Array;
-
-interface CubeHelloMessage extends BaseMessage {
-  type: CubeMessageType.CubeHello;
-}
-
-interface StateChangeMessage extends BaseMessage {
-  type: CubeMessageType.StateChange;
-  move: CubeMove;
-  prevMove: Uint8Array;
-}
-
-interface SyncConfirmationMessage extends BaseMessage {
-  type: CubeMessageType.SyncConfirmation;
-}
-
-export type CubeMessage =
-  | CubeHelloMessage
-  | StateChangeMessage
-  | SyncConfirmationMessage;

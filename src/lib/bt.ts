@@ -1,9 +1,4 @@
 import type { Communicator, EventHandler } from "./types";
-import { MAC } from "./constants";
-
-const MAIN_SERVICE_UUID = 0xfff0;
-const MAIN_CHARACTERISTIC_UUID = 0xfff6;
-const QY_CUBE_PREFIX = "QY-QYSC";
 
 export interface BTEventTarget {
   value: {
@@ -12,21 +7,49 @@ export interface BTEventTarget {
 }
 
 export class BT implements Communicator {
-  readonly uuid: string | number;
-  readonly prefix: string;
+  #uuids?: BluetoothServiceUUID[];
+  #prefix?: string;
+  #id?: string;
+  #name?: string;
   private device?: BluetoothDevice;
+  private service?: BluetoothRemoteGATTService;
+  private readonly onDisconnect: EventHandler;
 
   /**
    *
    * @param uuid Service UUID
    * @param prefix Prefix of the device name
    */
-  constructor(
-    uuid: number | string = MAIN_SERVICE_UUID,
-    prefix: string = QY_CUBE_PREFIX
-  ) {
-    this.uuid = uuid;
-    this.prefix = prefix;
+  constructor(onDisconnect: EventHandler) {
+    this.onDisconnect = onDisconnect;
+  }
+
+  set uuids(uuids: BluetoothServiceUUID[]) {
+    this.#uuids = uuids;
+  }
+
+  set prefix(prefix: string) {
+    this.#prefix = prefix;
+  }
+
+  private set id(id: string) {
+    this.#id = id;
+  }
+
+  get id() {
+    if (typeof this.#id === "undefined")
+      throw new Error("At first you need to init device");
+    return this.#id;
+  }
+
+  private set name(name: string) {
+    this.#name = name;
+  }
+
+  get name() {
+    if (typeof this.#name === "undefined")
+      throw new Error("At first you need to init device");
+    return this.#name;
   }
 
   private getDevice(): BluetoothDevice {
@@ -40,16 +63,18 @@ export class BT implements Communicator {
     return server;
   }
 
-  private async getService() {
+  private async getService(
+    uuid: BluetoothServiceUUID
+  ): Promise<BluetoothRemoteGATTService> {
     const server = await this.getServer();
-    return server.getPrimaryService(this.uuid);
+    this.service = await server.getPrimaryService(uuid);
+    return this.service;
   }
 
-  private async getCharacteristic(
-    uuid: number | string = MAIN_CHARACTERISTIC_UUID
-  ) {
-    const service = await this.getService();
-    return service.getCharacteristic(uuid);
+  async getCharacteristic(uuid: BluetoothCharacteristicUUID) {
+    if (typeof this.service === "undefined")
+      throw new Error("At first you have to init service");
+    return this.service.getCharacteristic(uuid);
   }
 
   private async onDisconnectSubscribe(onDisconnect: EventHandler) {
@@ -63,11 +88,12 @@ export class BT implements Communicator {
     );
   }
 
-  private async onMessageSubscribe(
-    onMessage: EventHandler<Uint8Array>,
-    uuid?: number | string
+  async onMessageSubscribe(
+    uuids: [BluetoothServiceUUID, BluetoothCharacteristicUUID],
+    onMessage: EventHandler<Uint8Array>
   ) {
-    const characteristic = await this.getCharacteristic(uuid);
+    await this.getService(uuids[0]);
+    const characteristic = await this.getCharacteristic(uuids[1]);
     await characteristic.startNotifications();
 
     characteristic.addEventListener(
@@ -80,28 +106,24 @@ export class BT implements Communicator {
     );
   }
 
-  async init(onDisconnect: EventHandler, onMessage: EventHandler<Uint8Array>) {
+  async init() {
     this.device = await navigator.bluetooth.requestDevice({
-      filters: [{ namePrefix: this.prefix }],
-      optionalServices: [this.uuid],
+      filters: [{ namePrefix: this.#prefix }],
+      optionalServices: this.#uuids,
     });
-
-    this.onDisconnectSubscribe(onDisconnect);
-    this.onMessageSubscribe(onMessage);
+    this.#id = this.device.id;
+    this.#name = this.device.name;
+    this.onDisconnectSubscribe(this.onDisconnect);
   }
 
-  async send(value: Uint8Array, uuid?: number | string) {
+  async send(value: Uint8Array, uuid: BluetoothCharacteristicUUID) {
     const characteristic = await this.getCharacteristic(uuid);
     await characteristic.writeValue(value);
   }
 
-  async read(uuid?: number | string) {
+  async read(uuid: BluetoothCharacteristicUUID) {
     const characteristic = await this.getCharacteristic(uuid);
     return characteristic.readValue();
-  }
-
-  get mac() {
-    return MAC;
   }
 
   disconnect() {
