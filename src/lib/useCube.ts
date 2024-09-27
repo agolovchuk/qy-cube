@@ -1,18 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { QYCube, separateByte } from "./QYCube/";
+import { AppStatus } from "@/domain";
+import { QYCube, separateByte } from "./QYCube";
 import { BT } from "./bt";
 import type { CubeMessage } from "./QYCube/types";
-
-export enum AppStatus {
-  CONNECTED,
-  DISCONNECTED,
-  ERROR,
-}
 
 export const useCube = () => {
   const cube = useRef<QYCube>();
   const [appStatus, setStatus] = useState<AppStatus>(AppStatus.DISCONNECTED);
   const [state, setState] = useState<ReadonlyArray<number>>();
+  const [notes, setNotes] = useState<string>();
   const handleDisconnect = useCallback(() => {
     setStatus(AppStatus.DISCONNECTED);
   }, []);
@@ -37,7 +33,9 @@ export const useCube = () => {
       await cube.current.init();
       setStatus(AppStatus.CONNECTED);
     } catch (err) {
-      console.log("ERRor", err);
+      if (err instanceof Error) {
+        setNotes(err.message);
+      }
       setStatus(AppStatus.ERROR);
     }
   }, [handleDisconnect, handleMessage]);
@@ -54,5 +52,6 @@ export const useCube = () => {
     disconnect,
     state,
     appStatus,
+    notes,
   };
 };

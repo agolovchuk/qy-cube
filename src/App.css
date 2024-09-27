@@ -14,12 +14,3 @@
   height: 40px;
   background-color: red;
 }
-
-.active {
-  background-color: green;
-}
-
-.btn {
-  padding: 0 20px;
-  height: 30px;
-}

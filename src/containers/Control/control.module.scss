@@ -1,0 +1,20 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.btn {
+  padding: 0 20px;
+  height: 30px;
+  border: 2px solid #28a745;
+  border-radius: 4px;
+  color: #28a745;
+  font-weight: bold;
+  cursor: pointer;
+  &:disabled {
+    color: #6c757d;
+    border-color: #6c757d;
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

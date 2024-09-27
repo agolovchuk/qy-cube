@@ -1,9 +1,9 @@
 .cube {
   &__container {
+    --cube-dimension: 60px;
     display: flex;
-    width: 300px;
-    height: 300px;
-    --cube-dimension: 40px;
+    width: calc(var(--cube-dimension) * 6);
+    height: calc(var(--cube-dimension) * 6);
   }
   &__list {
     transform-style: preserve-3d;
@@ -25,6 +25,7 @@
     position: absolute;
     width: var(--cube-dimension);
     height: var(--cube-dimension);
+    border-radius: 4px;
     // opacity: 0.6;
     --x-axis: 0px;
     --y-axis: 0px;
@@ -33,19 +34,19 @@
       background-color: #fff;
     }
     &--red {
-      background-color: red;
+      background-color: var(--red-color);
     }
     &--green {
-      background-color: green;
+      background-color: var(--green-color);
     }
     &--yellow {
-      background-color: yellow;
+      background-color: var(--yellow-color);
     }
     &--orange {
-      background-color: orange;
+      background-color: var(--orange-color);
     }
     &--blue {
-      background-color: blue;
+      background-color: var(--blue-color);
     }
     &[data-facet="top"] {
       transform: rotateX(90deg)

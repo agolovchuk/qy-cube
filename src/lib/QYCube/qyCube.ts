@@ -1,5 +1,5 @@
 import { encrypt, decrypt, padMessageToBlockSize } from "../aes128";
-import { createPacket, u8toArray } from "./helpers";
+import { createPacket } from "./helpers";
 import { parseMessage } from "./parser";
 import type { Communicator, EventHandler } from "../types";
 import type { CubeMessage } from "./types";
@@ -26,13 +26,11 @@ export class QYCube {
 
   private createMessage(data: Uint8Array, mac?: Uint8Array): Uint8Array {
     const preparedMessage = padMessageToBlockSize(createPacket(data, mac));
-    console.log("Message created: ", u8toArray(preparedMessage));
     return encrypt(preparedMessage);
   }
 
   private messageHandler = (data: Uint8Array) => {
     const message = parseMessage(decrypt(data));
-    console.log("Message received:", message);
     this.onMessage(message);
     if (message.isASCRequire) {
       const asc = new Uint8Array(5);

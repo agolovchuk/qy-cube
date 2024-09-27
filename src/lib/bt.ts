@@ -80,9 +80,7 @@ export class BT implements Communicator {
   private async onDisconnectSubscribe(onDisconnect: EventHandler) {
     this.getDevice().addEventListener(
       "gattserverdisconnected",
-      function (this: BluetoothDevice, event: Event) {
-        //TODO: Disconnected
-        console.log(this, event);
+      function (this: BluetoothDevice) {
         onDisconnect(undefined);
       }
     );

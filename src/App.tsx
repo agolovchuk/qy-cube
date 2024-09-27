@@ -1,34 +1,21 @@
 import "./App.css";
 import { Cube } from "@/components";
-import { useCube, AppStatus } from "./lib";
+import { ControlPanel } from "@/containers/Control";
+import { useCube } from "./lib";
 
 function App() {
   const { onConnect, disconnect, state, appStatus } = useCube();
   return (
-    <div>
+    <main className="app-main">
       <Cube state={state} />
-      <section className="device-control">
-        <button
-          disabled={appStatus === AppStatus.CONNECTED}
-          className="btn"
-          type="button"
-          onClick={onConnect}
-        >
-          Connect
-        </button>
-        <button
-          disabled={
-            appStatus === AppStatus.DISCONNECTED ||
-            appStatus === AppStatus.ERROR
-          }
-          className="btn"
-          type="button"
-          onClick={disconnect}
-        >
-          Disconnect
-        </button>
-      </section>
-    </div>
+      <aside>
+        <ControlPanel
+          onConnect={onConnect}
+          onDisconnect={disconnect}
+          status={appStatus}
+        />
+      </aside>
+    </main>
   );
 }
 
