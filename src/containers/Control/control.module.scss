@@ -11,6 +11,8 @@
   color: #28a745;
   font-weight: bold;
   cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
   &:disabled {
     color: #6c757d;
     border-color: #6c757d;

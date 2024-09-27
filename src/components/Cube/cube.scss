@@ -6,8 +6,9 @@
     height: calc(var(--cube-dimension) * 6);
   }
   &__list {
+    transition: 0.1s transform ease-in-out;
     transform-style: preserve-3d;
-    transform: rotate3d(1, 1, 1, 45deg);
+    transform: rotateX(var(--rotate-x)) rotateY(var(--rotate-y));
     position: relative;
     margin: auto;
     width: calc(var(--cube-dimension) * 3);
@@ -25,28 +26,39 @@
     position: absolute;
     width: var(--cube-dimension);
     height: var(--cube-dimension);
-    border-radius: 4px;
-    // opacity: 0.6;
+    // border: 1px solid #6c757d;
+    opacity: 1;
     --x-axis: 0px;
     --y-axis: 0px;
     --z-axis: calc(var(--cube-dimension) * 3 / 2);
+    background-color: #f0f0f0;
+    display: flex;
+    &::before {
+      content: "";
+      display: block;
+      width: calc(100% - 4px);
+      height: calc(100% - 4px);
+      border-radius: 8px;
+      background: var(--facet-color);
+      margin: auto;
+    }
     &--white {
-      background-color: #fff;
+      --facet-color: #fff;
     }
     &--red {
-      background-color: var(--red-color);
+      --facet-color: var(--red-color);
     }
     &--green {
-      background-color: var(--green-color);
+      --facet-color: var(--green-color);
     }
     &--yellow {
-      background-color: var(--yellow-color);
+      --facet-color: var(--yellow-color);
     }
     &--orange {
-      background-color: var(--orange-color);
+      --facet-color: var(--orange-color);
     }
     &--blue {
-      background-color: var(--blue-color);
+      --facet-color: var(--blue-color);
     }
     &[data-facet="top"] {
       transform: rotateX(90deg)
