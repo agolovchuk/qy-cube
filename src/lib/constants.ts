@@ -14,9 +14,9 @@ export enum CubeColor {
 
 export enum CubeFacet {
   top,
-  left,
-  back,
-  bottom,
   right,
   front,
+  bottom,
+  left,
+  back,
 }

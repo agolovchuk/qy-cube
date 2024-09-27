@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { QYCube, separateByte } from "./QYCube/";
 import { BT } from "./bt";
 import type { CubeMessage } from "./QYCube/types";
@@ -41,6 +41,13 @@ export const useCube = () => {
       setStatus(AppStatus.ERROR);
     }
   }, [handleDisconnect, handleMessage]);
+
+  useEffect(
+    () => () => {
+      cube.current?.disconnect();
+    },
+    []
+  );
 
   return {
     onConnect: handleConnect,
