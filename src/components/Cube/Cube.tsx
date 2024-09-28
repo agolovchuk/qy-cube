@@ -12,15 +12,15 @@ type EventHandler = (event: MouseEvent) => void;
 // TODO: Update rotation function
 function getRotationParams(
   position: [number, number, number, number, number, number]
-): [number, number] {
+): [string, string] {
   const deltaX = position[2] - position[0];
   const deltaY = position[3] - position[1];
 
-  const sensitivity = 1;
+  const sensitivity = 0.8;
   position[4] += deltaY * sensitivity;
   position[5] += deltaX * sensitivity;
 
-  return [position[4], position[5]];
+  return [position[4].toFixed(1), position[5].toFixed(1)];
 }
 
 const Cube: FC<Props> = ({ state = [] }) => {
