@@ -1,0 +1,18 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  height: 100%;
+}
+
+.app-main {
+  display: flex;
+  place-items: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-aside {
+  padding: 10px;
+}
