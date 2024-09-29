@@ -1,7 +1,7 @@
 import { crc16ModBus } from "./crc16";
 import { createPacket } from "./QYCube";
 import { padMessageToBlockSize, decrypt, encrypt } from "./aes128";
-import { APP_HELLO, MAC } from "./mock";
+import { APP_HELLO, MAC, KEY } from "./mock";
 
 const hello = new Uint8Array([
   254, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 249, 252, 0, 0, 163, 204, 21, 8, 0,
@@ -41,7 +41,7 @@ test("Should create padded message", () => {
 test("Should encrypt message", () => {
   const helloPacket = createPacket(APP_HELLO, MAC);
   const paddedMessage = padMessageToBlockSize(helloPacket);
-  const encMessage = encrypt(paddedMessage);
+  const encMessage = encrypt(KEY, paddedMessage);
   expect(encMessage.length).toBe(paddedMessage.length);
 });
 
@@ -49,12 +49,12 @@ test("Should encrypt correctly", () => {
   const helloPacket = createPacket(new Uint8Array(11), MAC);
   const paddedMessage = padMessageToBlockSize(helloPacket);
   expect(paddedMessage).toEqual(hello);
-  expect(encrypt(paddedMessage)).toEqual(encryptedHello);
+  expect(encrypt(KEY, paddedMessage)).toEqual(encryptedHello);
 });
 
 test("Should be encrypt and decrypt correctly", () => {
   const helloPacket = createPacket(APP_HELLO, MAC);
   const paddedMessage = padMessageToBlockSize(helloPacket);
-  const eMessage = encrypt(paddedMessage);
-  expect(decrypt(eMessage)).toEqual(paddedMessage);
+  const eMessage = encrypt(KEY, paddedMessage);
+  expect(decrypt(KEY, eMessage)).toEqual(paddedMessage);
 });

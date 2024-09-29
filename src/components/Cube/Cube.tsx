@@ -5,6 +5,8 @@ import "./cube.scss";
 
 interface Props {
   state?: ReadonlyArray<number>;
+  className?: string;
+  lastMove?: number;
 }
 
 type EventHandler = (event: MouseEvent) => void;
@@ -23,7 +25,7 @@ function getRotationParams(
   return [position[4].toFixed(1), position[5].toFixed(1)];
 }
 
-const Cube: FC<Props> = ({ state = [] }) => {
+const Cube: FC<Props> = ({ state = [], className }) => {
   const position = useRef<[number, number, number, number, number, number]>([
     0, 0, 0, 0, 0, 0,
   ]);
@@ -67,7 +69,7 @@ const Cube: FC<Props> = ({ state = [] }) => {
   return (
     <div
       ref={container}
-      className="cube__container"
+      className={cn("cube__container", className)}
       onMouseDown={mouseDownHandler}
     >
       <ul className="cube__list">

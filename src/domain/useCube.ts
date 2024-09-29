@@ -1,26 +1,30 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { AppStatus } from "@/domain";
-import { QYCube } from "./QYCube";
-import { BT } from "./bt";
-import { NORMAL_CUBE_STATE } from "./constants";
+import { useCallback, useEffect, useRef, useReducer, useMemo } from "react";
+import { QYCube } from "@/lib/QYCube";
+import { BT } from "@/lib/bt";
+import {
+  initialState,
+  reducer,
+  CubeReducer,
+  ActionType,
+  updateState,
+} from "./reducer";
+import { AppStatus, CubeMove } from "./constants";
 import type { CubeState } from "./types";
 
 export const useCube = () => {
   const cube = useRef<QYCube>();
 
-  // TODO: Migrate to useReduce
-  const [appStatus, setStatus] = useState<AppStatus>(AppStatus.DISCONNECTED);
-  const [state, setState] = useState<ReadonlyArray<number>>(NORMAL_CUBE_STATE);
-  const [notes, setNotes] = useState<string>();
-  const [battery, setBattery] = useState<number>();
+  const [state, dispatch] = useReducer<CubeReducer>(reducer, initialState);
 
   const handleDisconnect = useCallback(() => {
-    setStatus(AppStatus.DISCONNECTED);
+    dispatch({
+      type: ActionType.SET_CONNECTION_STATUS,
+      status: AppStatus.DISCONNECTED,
+    });
   }, []);
 
   const handleMessage = useCallback((message: CubeState) => {
-    setState(message.state);
-    setBattery(message.battery);
+    dispatch(updateState(message));
   }, []);
 
   const disconnect = useCallback(() => {
@@ -33,14 +37,22 @@ export const useCube = () => {
     cube.current = new QYCube(new BT(handleDisconnect), handleMessage);
     try {
       await cube.current.init();
-      setStatus(AppStatus.CONNECTED);
+      dispatch({
+        type: ActionType.SET_CONNECTION_STATUS,
+        status: AppStatus.CONNECTED,
+      });
     } catch (err) {
       if (err instanceof Error) {
-        setNotes(err.message);
+        dispatch({ type: ActionType.SET_ERROR_MESSAGE, error: err.message });
       }
-      setStatus(AppStatus.ERROR);
     }
   }, [handleDisconnect, handleMessage]);
+
+  const lastMove = useMemo<CubeMove | undefined>(
+    () =>
+      state.moves.length ? state.moves[state.moves.length - 1] : undefined,
+    [state.moves]
+  );
 
   useEffect(
     () => () => {
@@ -53,8 +65,6 @@ export const useCube = () => {
     onConnect: handleConnect,
     disconnect,
     state,
-    appStatus,
-    notes,
-    battery,
+    lastMove,
   };
 };

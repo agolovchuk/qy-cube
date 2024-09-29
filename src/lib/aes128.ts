@@ -1,5 +1,4 @@
 import CryptoJS from "crypto-js";
-import { AES128_KEY } from "./constants";
 
 export function uint8ArrayToWordArray(
   uint8Array: Uint8Array
@@ -25,24 +24,26 @@ function wordArrayToUint8Array(
   return u8_array;
 }
 
-const wordArrayKey = uint8ArrayToWordArray(AES128_KEY);
-
-export function encrypt(message: Uint8Array): Uint8Array {
+export function encrypt(key: Uint8Array, message: Uint8Array): Uint8Array {
   if (message.length % 16 !== 0) throw new Error("Incorrect message length");
   const messageWordArray = uint8ArrayToWordArray(message);
-  const encrypted = CryptoJS.AES.encrypt(messageWordArray, wordArrayKey, {
-    mode: CryptoJS.mode.ECB,
-    padding: CryptoJS.pad.NoPadding,
-  });
+  const encrypted = CryptoJS.AES.encrypt(
+    messageWordArray,
+    uint8ArrayToWordArray(key),
+    {
+      mode: CryptoJS.mode.ECB,
+      padding: CryptoJS.pad.NoPadding,
+    }
+  );
   return wordArrayToUint8Array(encrypted.ciphertext);
 }
 
-export function decrypt(encryptedMessage: Uint8Array) {
+export function decrypt(key: Uint8Array, encryptedMessage: Uint8Array) {
   const encryptedWordArray = uint8ArrayToWordArray(encryptedMessage);
 
   const decrypted = CryptoJS.AES.decrypt(
     CryptoJS.lib.CipherParams.create({ ciphertext: encryptedWordArray }),
-    wordArrayKey,
+    uint8ArrayToWordArray(key),
     {
       mode: CryptoJS.mode.ECB,
       padding: CryptoJS.pad.NoPadding,

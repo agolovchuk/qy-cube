@@ -1,5 +1,5 @@
 import { CubeMessageType } from "./constants";
-import { CubeMove } from "@/lib/constants";
+import { CubeMove } from "@/domain/constants";
 
 interface BaseMessage {
   battery: number;

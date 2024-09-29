@@ -1,8 +1,9 @@
-import { encrypt, decrypt, padMessageToBlockSize } from "../aes128";
-import { CubeMessageType } from "./constants";
+import { encrypt, decrypt, padMessageToBlockSize } from "@/lib/aes128";
+import type { CubeState } from "@/domain/types";
+import { CubeMessageType, AES128_KEY } from "./constants";
 import { createPacket, separateByte } from "./helpers";
 import { parseMessage } from "./parser";
-import type { Communicator, EventHandler, CubeState } from "../types";
+import type { Communicator, EventHandler } from "../types";
 
 const MAIN_SERVICE_UUID = 0xfff0;
 const MAIN_CHARACTERISTIC_UUID = 0xfff6;
@@ -23,16 +24,17 @@ export class QYCube {
 
   private createMessage(data: Uint8Array, mac?: Uint8Array): Uint8Array {
     const preparedMessage = padMessageToBlockSize(createPacket(data, mac));
-    return encrypt(preparedMessage);
+    return encrypt(AES128_KEY, preparedMessage);
   }
 
   private messageHandler = (data: Uint8Array) => {
-    const message = parseMessage(decrypt(data));
+    const message = parseMessage(decrypt(AES128_KEY, data));
     if (
       message.type === CubeMessageType.CubeHello ||
       message.type === CubeMessageType.StateChange
     )
       this.onMessage({
+        type: message.type - 2,
         battery: message.battery,
         state: message.state.reduce<ReadonlyArray<number>>(
           (a, v) => [...a, ...separateByte(v)],

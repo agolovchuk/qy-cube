@@ -1,21 +1,24 @@
-import "./App.css";
-import { Cube } from "@/components";
+import { useCube } from "@/domain";
+import { Cube, Moves } from "@/components";
 import { ControlPanel } from "@/containers/Control";
-import { useCube } from "./lib";
+import "./App.scss";
 
 function App() {
-  const { onConnect, disconnect, state, appStatus } = useCube();
+  const { onConnect, disconnect, state, lastMove } = useCube();
   return (
-    <main className="app-main">
-      <Cube state={state} />
-      <aside>
+    <>
+      <main className="app-main">
+        <Cube state={state.cube} className="" lastMove={lastMove} />
+      </main>
+      <aside className="app-aside">
         <ControlPanel
           onConnect={onConnect}
           onDisconnect={disconnect}
-          status={appStatus}
+          status={state.status}
         />
+        <Moves moves={state.moves} />
       </aside>
-    </main>
+    </>
   );
 }
 
