@@ -32,7 +32,7 @@ export class QYCube {
     if (
       message.type === CubeMessageType.CubeHello ||
       message.type === CubeMessageType.StateChange
-    )
+    ) {
       this.onMessage({
         type: message.type - 2,
         battery: message.battery,
@@ -41,7 +41,12 @@ export class QYCube {
           []
         ),
         move: message.move,
+        timestamp: message.timestamp.reduce(
+          (a, v, i, arr) => a | (v << ((arr.length - 1 - i) * 8)),
+          0
+        ),
       });
+    }
     if (message.isASCRequire) {
       const asc = new Uint8Array(5);
       asc[0] = message.type;

@@ -8,7 +8,11 @@ function App() {
   return (
     <>
       <main className="app-main">
-        <Cube state={state.cube} className="" lastMove={lastMove} />
+        <Cube
+          state={state.cube}
+          lastMove={lastMove}
+          timestamp={state.timestamp}
+        />
       </main>
       <aside className="app-aside">
         <ControlPanel

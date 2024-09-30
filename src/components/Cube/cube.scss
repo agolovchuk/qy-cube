@@ -9,13 +9,452 @@
     height: calc(var(--cube-dimension) * 6);
   }
   &__list {
-    transition: 0.1s transform ease-in-out;
+    transition: 0.05s transform ease-out;
     transform-style: preserve-3d;
     transform: rotateX(var(--rotate-x)) rotateY(var(--rotate-y));
     position: relative;
     margin: auto;
     width: calc(var(--cube-dimension) * 3);
     height: calc(var(--cube-dimension) * 3);
+    &--l {
+      .cube__item {
+        &[data-facet="top"] {
+          &:nth-child(9n + 1),
+          &:nth-child(9n + 4),
+          &:nth-child(9n + 7) {
+            --rotate-angle-x: 0deg;
+          }
+        }
+        &[data-facet="back"] {
+          &:nth-child(9n + 3),
+          &:nth-child(9n + 6),
+          &:nth-child(9n + 9) {
+            --rotate-angle-x: 90deg;
+          }
+        }
+        &[data-facet="front"] {
+          &:nth-child(9n + 1),
+          &:nth-child(9n + 4),
+          &:nth-child(9n + 7) {
+            --rotate-angle-x: -90deg;
+          }
+        }
+        &[data-facet="bottom"] {
+          &:nth-child(9n + 1),
+          &:nth-child(9n + 4),
+          &:nth-child(9n + 7) {
+            --rotate-angle-x: -180deg;
+          }
+        }
+        &[data-facet="left"] {
+          --rotate-angle-z: 90deg;
+        }
+      }
+    }
+    &--l-reverse {
+      .cube__item {
+        &[data-facet="top"] {
+          &:nth-child(9n + 1),
+          &:nth-child(9n + 4),
+          &:nth-child(9n + 7) {
+            --rotate-angle-x: 180deg;
+          }
+        }
+        &[data-facet="back"] {
+          &:nth-child(9n + 3),
+          &:nth-child(9n + 6),
+          &:nth-child(9n + 9) {
+            --rotate-angle-x: -90deg;
+          }
+        }
+        &[data-facet="bottom"] {
+          &:nth-child(9n + 1),
+          &:nth-child(9n + 4),
+          &:nth-child(9n + 7) {
+            --rotate-angle-x: 0deg;
+          }
+        }
+        &[data-facet="front"] {
+          &:nth-child(9n + 1),
+          &:nth-child(9n + 4),
+          &:nth-child(9n + 7) {
+            --rotate-angle-x: 90deg;
+          }
+        }
+        &[data-facet="left"] {
+          --rotate-angle-z: -90deg;
+        }
+      }
+    }
+    &--r {
+      .cube__item {
+        &[data-facet="top"] {
+          &:nth-child(9n + 3),
+          &:nth-child(9n + 6),
+          &:nth-child(9n + 9) {
+            --rotate-angle-x: 180deg;
+          }
+        }
+        &[data-facet="back"] {
+          &:nth-child(9n + 1),
+          &:nth-child(9n + 4),
+          &:nth-child(9n + 7) {
+            --rotate-angle-x: -90deg;
+          }
+        }
+        &[data-facet="front"] {
+          &:nth-child(9n + 3),
+          &:nth-child(9n + 6),
+          &:nth-child(9n + 9) {
+            --rotate-angle-x: 90deg;
+          }
+        }
+        &[data-facet="bottom"] {
+          &:nth-child(9n + 3),
+          &:nth-child(9n + 6),
+          &:nth-child(9n + 9) {
+            --rotate-angle-x: 0deg;
+          }
+        }
+        &[data-facet="right"] {
+          --rotate-angle-z: 90deg;
+        }
+      }
+    }
+    &--r-reverse {
+      .cube__item {
+        &[data-facet="top"] {
+          &:nth-child(9n + 3),
+          &:nth-child(9n + 6),
+          &:nth-child(9n + 9) {
+            --rotate-angle-x: 0deg;
+          }
+        }
+        &[data-facet="back"] {
+          &:nth-child(9n + 1),
+          &:nth-child(9n + 4),
+          &:nth-child(9n + 7) {
+            --rotate-angle-x: 90deg;
+          }
+        }
+        &[data-facet="bottom"] {
+          &:nth-child(9n + 3),
+          &:nth-child(9n + 6),
+          &:nth-child(9n + 9) {
+            --rotate-angle-x: -180deg;
+          }
+        }
+        &[data-facet="front"] {
+          &:nth-child(9n + 3),
+          &:nth-child(9n + 6),
+          &:nth-child(9n + 9) {
+            --rotate-angle-x: -90deg;
+          }
+        }
+        &[data-facet="right"] {
+          --rotate-angle-z: -90deg;
+        }
+      }
+    }
+    &--d {
+      .cube__item {
+        &[data-facet="front"] {
+          &:nth-child(9n + 7),
+          &:nth-child(9n + 8),
+          &:nth-child(9n + 9) {
+            --rotate-angle-y: 90deg;
+          }
+        }
+        &[data-facet="left"] {
+          &:nth-child(9n + 7),
+          &:nth-child(9n + 8),
+          &:nth-child(9n + 9) {
+            --rotate-angle-y: 0deg;
+          }
+        }
+        &[data-facet="right"] {
+          &:nth-child(9n + 7),
+          &:nth-child(9n + 8),
+          &:nth-child(9n + 9) {
+            --rotate-angle-y: 180deg;
+          }
+        }
+        &[data-facet="back"] {
+          &:nth-child(9n + 7),
+          &:nth-child(9n + 8),
+          &:nth-child(9n + 9) {
+            --rotate-angle-y: 270deg;
+          }
+        }
+        &[data-facet="bottom"] {
+          --rotate-angle-y: 90deg;
+        }
+      }
+    }
+    &--d-reverse {
+      .cube__item {
+        &[data-facet="front"] {
+          &:nth-child(9n + 7),
+          &:nth-child(9n + 8),
+          &:nth-child(9n + 9) {
+            --rotate-angle-y: -90deg;
+          }
+        }
+        &[data-facet="left"] {
+          &:nth-child(9n + 7),
+          &:nth-child(9n + 8),
+          &:nth-child(9n + 9) {
+            --rotate-angle-y: -180deg;
+          }
+        }
+        &[data-facet="right"] {
+          &:nth-child(9n + 7),
+          &:nth-child(9n + 8),
+          &:nth-child(9n + 9) {
+            --rotate-angle-y: 0deg;
+          }
+        }
+        &[data-facet="back"] {
+          &:nth-child(9n + 7),
+          &:nth-child(9n + 8),
+          &:nth-child(9n + 9) {
+            --rotate-angle-y: 90deg;
+          }
+        }
+        &[data-facet="bottom"] {
+          --rotate-angle-y: -90deg;
+        }
+      }
+    }
+    &--u {
+      .cube__item {
+        &[data-facet="front"] {
+          &:nth-child(9n + 1),
+          &:nth-child(9n + 2),
+          &:nth-child(9n + 3) {
+            --rotate-angle-y: -90deg;
+          }
+        }
+        &[data-facet="left"] {
+          &:nth-child(9n + 1),
+          &:nth-child(9n + 2),
+          &:nth-child(9n + 3) {
+            --rotate-angle-y: -180deg;
+          }
+        }
+        &[data-facet="right"] {
+          &:nth-child(9n + 1),
+          &:nth-child(9n + 2),
+          &:nth-child(9n + 3) {
+            --rotate-angle-y: 0deg;
+          }
+        }
+        &[data-facet="back"] {
+          &:nth-child(9n + 1),
+          &:nth-child(9n + 2),
+          &:nth-child(9n + 3) {
+            --rotate-angle-y: 90deg;
+          }
+        }
+        &[data-facet="top"] {
+          --rotate-angle-z: 90deg;
+        }
+      }
+    }
+    &--u-reverse {
+      .cube__item {
+        &[data-facet="front"] {
+          &:nth-child(9n + 1),
+          &:nth-child(9n + 2),
+          &:nth-child(9n + 3) {
+            --rotate-angle-y: 90deg;
+          }
+        }
+        &[data-facet="left"] {
+          &:nth-child(9n + 1),
+          &:nth-child(9n + 2),
+          &:nth-child(9n + 3) {
+            --rotate-angle-y: 0deg;
+          }
+        }
+        &[data-facet="right"] {
+          &:nth-child(9n + 1),
+          &:nth-child(9n + 2),
+          &:nth-child(9n + 3) {
+            --rotate-angle-y: 180deg;
+          }
+        }
+        &[data-facet="back"] {
+          &:nth-child(9n + 1),
+          &:nth-child(9n + 2),
+          &:nth-child(9n + 3) {
+            --rotate-angle-y: 270deg;
+          }
+        }
+        &[data-facet="top"] {
+          --rotate-angle-z: -90deg;
+        }
+      }
+    }
+    &--f {
+      .cube__item {
+        &[data-facet="top"] {
+          &:nth-child(9n + 7),
+          &:nth-child(9n + 8),
+          &:nth-child(9n + 9) {
+            transform: rotateZ(var(--rotate-angle-z))
+              rotateX(var(--rotate-angle-x)) rotateY(90deg)
+              translate3d(var(--x-axis), var(--y-axis), var(--z-axis));
+          }
+        }
+        &[data-facet="left"] {
+          &:nth-child(9n + 3),
+          &:nth-child(9n + 6),
+          &:nth-child(9n + 9) {
+            --rotate-angle-x: 90deg;
+          }
+        }
+        &[data-facet="right"] {
+          &:nth-child(9n + 1),
+          &:nth-child(9n + 4),
+          &:nth-child(9n + 7) {
+            --rotate-angle-x: -90deg;
+          }
+        }
+        &[data-facet="bottom"] {
+          &:nth-child(9n + 1),
+          &:nth-child(9n + 2),
+          &:nth-child(9n + 3) {
+            transform: rotateZ(var(--rotate-angle-z))
+              rotateX(var(--rotate-angle-x)) rotateY(-90deg)
+              translate3d(var(--x-axis), var(--y-axis), var(--z-axis));
+          }
+        }
+        &[data-facet="front"] {
+          --rotate-angle-z: 90deg;
+        }
+      }
+    }
+    &--f-reverse {
+      .cube__item {
+        &[data-facet="left"] {
+          &:nth-child(9n + 3),
+          &:nth-child(9n + 6),
+          &:nth-child(9n + 9) {
+            --rotate-angle-x: -90deg;
+          }
+        }
+        &[data-facet="right"] {
+          &:nth-child(9n + 1),
+          &:nth-child(9n + 4),
+          &:nth-child(9n + 7) {
+            --rotate-angle-x: 90deg;
+          }
+        }
+        &[data-facet="top"] {
+          &:nth-child(9n + 7),
+          &:nth-child(9n + 8),
+          &:nth-child(9n + 9) {
+            transform: rotateZ(var(--rotate-angle-z))
+              rotateX(var(--rotate-angle-x)) rotateY(-90deg)
+              translate3d(var(--x-axis), var(--y-axis), var(--z-axis));
+          }
+        }
+        &[data-facet="bottom"] {
+          &:nth-child(9n + 1),
+          &:nth-child(9n + 2),
+          &:nth-child(9n + 3) {
+            transform: rotateZ(var(--rotate-angle-z))
+              rotateX(var(--rotate-angle-x)) rotateY(90deg)
+              translate3d(var(--x-axis), var(--y-axis), var(--z-axis));
+          }
+        }
+        &[data-facet="front"] {
+          --rotate-angle-z: -90deg;
+        }
+      }
+    }
+    &--b {
+      .cube__item {
+        &[data-facet="top"] {
+          &:nth-child(9n + 1),
+          &:nth-child(9n + 2),
+          &:nth-child(9n + 3) {
+            transform: rotateZ(var(--rotate-angle-z))
+              rotateX(var(--rotate-angle-x)) rotateY(-90deg)
+              translate3d(var(--x-axis), var(--y-axis), var(--z-axis));
+          }
+        }
+        &[data-facet="left"] {
+          &:nth-child(9n + 1),
+          &:nth-child(9n + 4),
+          &:nth-child(9n + 7) {
+            --rotate-angle-x: -90deg;
+          }
+        }
+        &[data-facet="right"] {
+          &:nth-child(9n + 3),
+          &:nth-child(9n + 6),
+          &:nth-child(9n + 9) {
+            --rotate-angle-x: 90deg;
+          }
+        }
+        &[data-facet="bottom"] {
+          &:nth-child(9n + 7),
+          &:nth-child(9n + 8),
+          &:nth-child(9n + 9) {
+            transform: rotateZ(var(--rotate-angle-z))
+              rotateX(var(--rotate-angle-x)) rotateY(90deg)
+              translate3d(var(--x-axis), var(--y-axis), var(--z-axis));
+          }
+        }
+        &[data-facet="back"] {
+          --rotate-angle-z: 90deg;
+        }
+      }
+    }
+    &--b-reverse {
+      .cube__item {
+        &[data-facet="top"] {
+          &:nth-child(9n + 1),
+          &:nth-child(9n + 2),
+          &:nth-child(9n + 3) {
+            transform: rotateZ(var(--rotate-angle-z))
+              rotateX(var(--rotate-angle-x)) rotateY(90deg)
+              translate3d(var(--x-axis), var(--y-axis), var(--z-axis));
+          }
+        }
+        &[data-facet="left"] {
+          &:nth-child(9n + 1),
+          &:nth-child(9n + 4),
+          &:nth-child(9n + 7) {
+            --rotate-angle-x: 90deg;
+          }
+        }
+        &[data-facet="right"] {
+          &:nth-child(9n + 3),
+          &:nth-child(9n + 6),
+          &:nth-child(9n + 9) {
+            --rotate-angle-x: -90deg;
+          }
+        }
+        &[data-facet="bottom"] {
+          &:nth-child(9n + 7),
+          &:nth-child(9n + 8),
+          &:nth-child(9n + 9) {
+            transform: rotateZ(var(--rotate-angle-z))
+              rotateX(var(--rotate-angle-x)) rotateY(-90deg)
+              translate3d(var(--x-axis), var(--y-axis), var(--z-axis));
+          }
+        }
+        &[data-facet="back"] {
+          --rotate-angle-z: -90deg;
+        }
+      }
+    }
+    &--animate .cube__item {
+      transition: 0.2s transform ease-out;
+    }
   }
   &__item {
     left: 0;
@@ -34,6 +473,9 @@
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     border-radius: 4px;
+    transform: rotateY(var(--rotate-angle-y)) rotateX(var(--rotate-angle-x))
+      rotateZ(var(--rotate-angle-z))
+      translate3d(var(--x-axis), var(--y-axis), var(--z-axis));
     &::before {
       content: "";
       display: block;
@@ -62,27 +504,34 @@
       --facet-color: var(--blue-color);
     }
     &[data-facet="top"] {
-      transform: rotateX(90deg)
-        translate3d(var(--x-axis), var(--y-axis), var(--z-axis));
-    }
-    &[data-facet="left"] {
-      transform: rotateY(-90deg)
-        translate3d(var(--x-axis), var(--y-axis), var(--z-axis));
-    }
-    &[data-facet="back"] {
-      transform: rotateY(180deg)
-        translate3d(var(--x-axis), var(--y-axis), var(--z-axis));
+      --rotate-angle-x: 90deg;
+      --rotate-angle-y: 0deg;
+      --rotate-angle-z: 0deg;
     }
     &[data-facet="bottom"] {
-      transform: rotateX(-90deg)
-        translate3d(var(--x-axis), var(--y-axis), var(--z-axis));
+      --rotate-angle-x: -90deg;
+      --rotate-angle-y: 0deg;
+      --rotate-angle-z: 0deg;
+    }
+    &[data-facet="left"] {
+      --rotate-angle-x: 0deg;
+      --rotate-angle-y: -90deg;
+      --rotate-angle-z: 0deg;
     }
     &[data-facet="right"] {
-      transform: rotateY(90deg)
-        translate3d(var(--x-axis), var(--y-axis), var(--z-axis));
+      --rotate-angle-x: 0deg;
+      --rotate-angle-y: 90deg;
+      --rotate-angle-z: 0deg;
+    }
+    &[data-facet="back"] {
+      --rotate-angle-x: 0deg;
+      --rotate-angle-y: 180deg;
+      --rotate-angle-z: 0deg;
     }
     &[data-facet="front"] {
-      transform: translate3d(var(--x-axis), var(--y-axis), var(--z-axis));
+      --rotate-angle-x: 0deg;
+      --rotate-angle-y: 0deg;
+      --rotate-angle-z: 0deg;
     }
     &:nth-child(9n + 1) {
       --x-axis: calc(var(--cube-dimension) * -1);

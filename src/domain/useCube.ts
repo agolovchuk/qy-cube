@@ -8,7 +8,7 @@ import {
   ActionType,
   updateState,
 } from "./reducer";
-import { AppStatus, CubeMove } from "./constants";
+import { AppStatus } from "./constants";
 import type { CubeState } from "./types";
 
 export const useCube = () => {
@@ -48,7 +48,7 @@ export const useCube = () => {
     }
   }, [handleDisconnect, handleMessage]);
 
-  const lastMove = useMemo<CubeMove | undefined>(
+  const lastMove = useMemo<number | undefined>(
     () =>
       state.moves.length ? state.moves[state.moves.length - 1] : undefined,
     [state.moves]

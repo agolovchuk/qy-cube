@@ -1,10 +1,10 @@
 export enum CubeColor {
-  orange = 0,
-  red = 1,
-  yellow = 2,
-  white = 3,
-  green = 4,
-  blue = 5,
+  orange,
+  red,
+  yellow,
+  white,
+  green,
+  blue,
 }
 
 export enum CubeFacet {
