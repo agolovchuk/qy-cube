@@ -1,3 +1,11 @@
+export enum ActionType {
+  INIT_CUBE_STATE,
+  UPDATE_CUBE_STATE,
+  SYNC_CUBE_STATE,
+  SET_CONNECTION_STATUS,
+  SET_ERROR_MESSAGE,
+}
+
 export enum AppStatus {
   CONNECTED,
   DISCONNECTED,
@@ -7,6 +15,7 @@ export enum AppStatus {
 export enum MessageType {
   INIT,
   UPDATE,
+  SYNC,
 }
 
 export const NORMAL_CUBE_STATE = [

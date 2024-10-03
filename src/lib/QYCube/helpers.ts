@@ -27,11 +27,14 @@ export function u8toArray(u8: Uint8Array): string[] {
   return u8.reduce<string[]>((a, v) => [...a, toHexString(v)], []);
 }
 
-export function getTimeStamp(data: Uint8Array, start: number): number {
-  const ts = new Uint32Array(data.subarray(start, start + 4));
-  return ts[0] * 1.6;
-}
-
 export function separateByte(byte: number): [number, number] {
   return [byte & 0x0f, byte >> 4];
+}
+
+export function getTimeStamp(data: Uint8Array): number {
+  const ts = data.reduce(
+    (a, v, i, arr) => a | (v << ((arr.length - 1 - i) * 8)),
+    0
+  );
+  return ts * 1.6;
 }

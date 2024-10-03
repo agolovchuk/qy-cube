@@ -5,11 +5,8 @@ interface BaseMessage {
   battery: number;
   timestamp: Uint8Array;
   isASCRequire: number;
-  state: CubeState;
-  move?: CubeMove;
+  state: ReadonlyArray<number>;
 }
-
-type CubeState = Uint8Array;
 
 interface CubeHelloMessage extends BaseMessage {
   type: CubeMessageType.CubeHello;
@@ -17,6 +14,7 @@ interface CubeHelloMessage extends BaseMessage {
 
 interface StateChangeMessage extends BaseMessage {
   type: CubeMessageType.StateChange;
+  move: CubeMove;
   prevMove: Uint8Array;
 }
 

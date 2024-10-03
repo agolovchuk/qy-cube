@@ -1,76 +1,42 @@
 import { Reducer } from "react";
-import { CubeState } from "./types";
-import {
-  NORMAL_CUBE_STATE,
-  AppStatus,
-  CubeMove,
-  MessageType,
-} from "./constants";
+import { CubeMessage, CubeMessageType, getTimeStamp } from "@/lib/QYCube";
+import { NORMAL_CUBE_STATE, AppStatus, ActionType } from "./constants";
+import type {
+  State,
+  Action,
+  InitAction,
+  UpdateAction,
+  SyncAction,
+} from "./types";
 
-export enum ActionType {
-  INIT_CUBE_STATE,
-  UPDATE_CUBE_STATE,
-  SET_CONNECTION_STATUS,
-  SET_ERROR_MESSAGE,
-}
-
-export interface State {
-  error?: string;
-  battery: number;
-  cube: ReadonlyArray<number>;
-  moves: ReadonlyArray<CubeMove>;
-  status: AppStatus;
-  timestamp: number;
-}
-
-interface InitAction {
-  type: ActionType.INIT_CUBE_STATE;
-  battery: number;
-  cube: ReadonlyArray<number>;
-  timestamp: number;
-}
-
-interface UpdateAction extends Omit<InitAction, "type"> {
-  type: ActionType.UPDATE_CUBE_STATE;
-  move: CubeMove;
-}
-
-export function updateState({
-  type,
+export function messageAdapter({
   battery,
-  state,
-  move,
-  timestamp,
-}: CubeState): InitAction | UpdateAction {
-  // console.log(timestamp, "TTT");
-  if (type === MessageType.INIT) {
-    return {
-      type: ActionType.INIT_CUBE_STATE,
-      battery,
-      cube: state,
-      timestamp,
-    };
+  state: cube,
+  ...message
+}: CubeMessage): InitAction | UpdateAction | SyncAction {
+  const timestamp = getTimeStamp(message.timestamp);
+  switch (message.type) {
+    case CubeMessageType.CubeHello:
+      return {
+        type: ActionType.INIT_CUBE_STATE,
+        timestamp,
+        battery,
+        cube,
+      };
+    case CubeMessageType.StateChange:
+      return {
+        type: ActionType.UPDATE_CUBE_STATE,
+        timestamp,
+        cube,
+        battery,
+        move: message.move,
+      };
+    default:
+      return {
+        type: ActionType.SYNC_CUBE_STATE,
+      };
   }
-  return {
-    type: ActionType.UPDATE_CUBE_STATE,
-    battery,
-    cube: state,
-    timestamp,
-    move: move || 0,
-  };
 }
-
-export type Action =
-  | InitAction
-  | UpdateAction
-  | {
-      type: ActionType.SET_CONNECTION_STATUS;
-      status: AppStatus;
-    }
-  | {
-      type: ActionType.SET_ERROR_MESSAGE;
-      error: string;
-    };
 
 export const initialState: State = {
   battery: 0,
@@ -113,5 +79,7 @@ export function reducer(state: State, action: Action): State {
         status: AppStatus.ERROR,
         error: action.error,
       };
+    case ActionType.SYNC_CUBE_STATE:
+      return state;
   }
 }

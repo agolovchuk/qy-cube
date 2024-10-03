@@ -1,6 +1,6 @@
 import { crc16ModBus } from "../crc16";
 import { CubeMessageType } from "./constants";
-import { u8toArray } from "./helpers";
+import { u8toArray, separateByte } from "./helpers";
 import type { CubeMessage } from "./types";
 
 function trimPadding(data: Uint8Array, length: number): Uint8Array {
@@ -33,7 +33,9 @@ export function parseMessage(data: Uint8Array): CubeMessage {
   const baseMessage = {
     timestamp: packet.subarray(3, 3 + 4),
     battery: packet[35],
-    state: packet.subarray(7, 7 + 27),
+    state: packet
+      .subarray(7, 7 + 27)
+      .reduce<ReadonlyArray<number>>((a, v) => [...a, ...separateByte(v)], []),
   };
 
   switch (opCode) {

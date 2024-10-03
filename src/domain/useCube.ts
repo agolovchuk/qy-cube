@@ -1,15 +1,8 @@
 import { useCallback, useEffect, useRef, useReducer, useMemo } from "react";
-import { QYCube } from "@/lib/QYCube";
 import { BT } from "@/lib/bt";
-import {
-  initialState,
-  reducer,
-  CubeReducer,
-  ActionType,
-  updateState,
-} from "./reducer";
-import { AppStatus } from "./constants";
-import type { CubeState } from "./types";
+import { QYCube, CubeMessage } from "@/lib/QYCube";
+import { initialState, reducer, CubeReducer, messageAdapter } from "./reducer";
+import { AppStatus, ActionType } from "./constants";
 
 export const useCube = () => {
   const cube = useRef<QYCube>();
@@ -23,8 +16,8 @@ export const useCube = () => {
     });
   }, []);
 
-  const handleMessage = useCallback((message: CubeState) => {
-    dispatch(updateState(message));
+  const handleMessage = useCallback((cubeMessage: CubeMessage) => {
+    dispatch(messageAdapter(cubeMessage));
   }, []);
 
   const disconnect = useCallback(() => {
