@@ -1,5 +1,5 @@
 import { crc16ModBus } from "./crc16";
-import { createPacket } from "./QYCube";
+import { createPacket } from "./QYCube/helpers";
 import { padMessageToBlockSize, decrypt, encrypt } from "./aes128";
 import { APP_HELLO, MAC, KEY } from "./mock";
 
